@@ -1,114 +1,30 @@
-CS542 Design Patterns
-Spring 2015
-PROJECT <3> README FILE
+Project Description:
 
-Due Date: <Friday, April 3, 2015>
-Submission Date: <Monday, March 09, 2015>
-Grace Period Used This Project: <0> Days
-Grace Period Remaining: <0> Days
-Author(s): <Pravin Nagare> 
-e-mail(s): <pnagare1@binghamton.edu> 
+Develop a file based dashboard for a TaskManager. There are three tabs on the dashboard:
 
-PURPOSE:
-[
-  To implement DashBoard using observer pattern
-]
+Performance: It has the following information: Memory Total, Memory Used, Memory Free, Memory Cached, CPU Idle, CPU User Level, CPU System Level.
 
-PERCENT COMPLETE:
-[
-  I believe I have completed 100% of this assignment as per the requirements. 
-]
+Processes: It has the following information: PID, Command, User, %CPU, %MEM
 
-PARTS THAT ARE NOT COMPLETE:
-[
-  I believe everything is complete.
-]
+Users: It has the following information: User name, Status.
 
-BUGS:
+Use the following to split the strings in the input files:
+( * ) for tabs
+( - ) if there are multiple items in the tab (multiple users and processes) ( : ) seperates fields of items
+Data from the local file should be read by a single thread. So, do NOT design for a multi-threaded application.
+Use MyLogger (renamed the Debug class) in the following manner:
+0: No output should be printed. Only error messages should be printed (for example, message from a catch caluse before exiting).
+1: Only ouput from the dashboard should be printed
+2: Design on your own and mention in the README what is printed at this debug granularity
+3: Design on your own and mention in the README what is printed at this debug granularity 4: Design on your own and mention in the README what is printed at this debug granularity
 
-[
-  None
-]
+The following should be read from command line (or hardcoded in build.xml): inputFileName, outputFileName, Logger_level
+Program Flow
 
-FILES:
+The Driver should create a Subject instance, 3 observers and their filters, and register the observers and corresponding filters with the subject.
 
-[
-	Driver
-	FileProcessor
-	DashBoardSubject
-	Subject
-	Observer
-	ProcessesTab
-	UsersTab
-	PerformanceTab
-	PerformanceTabFilterImpl
-	UsersTabFilterImpl
-	ProcessesTabFilterImpl
-	DisplayFile
-	DashboardFilter	
+The Subject implementation should have an appropriate data structure to store observers and filters. The Driver should then invoke a method on the Subject to get it started.
 
-]
+The Subject should use the FileProcessor to read a line at at time from the input file. The Subject should use notifyAllObservers to send the string (entire line) to the appropriate listener, not all listeners. However, if a line has data for more than one listener, then split the line correctly in the Subject to send the appropriate data to each listener.. Use filter (programmed to an interface) so just the appropriate method of the listener is called.
 
-SAMPLE OUTPUT:
-
-[
-	Pravins-Mac:taskManager pravin$ ant -buildfile src/build.xml run
-	Buildfile: /Users/pravin/Documents/workspace/taskManager/src/build.xml
-
-jar:
-
-run:
-     [java] register of DashBoardSubject is called
-     [java] register of DashBoardSubject is called
-     [java] register of DashBoardSubject is called
-     [java] startProcessing of DashBoardSubject is called
-     [java] openfile of FileProcessor is called
-     [java] File Not Found.
-     [java] Java Result: 1
-
-BUILD SUCCESSFUL
-Total time: 0 seconds
-
-
-]
-
-TO COMPILE:
-
-[
-  ant -buildfile src/build.xml all
-]
-
-TO RUN:
-
-[
-  ant -buildfile src/build.xml run
-]
-
-EXTRA CREDIT:
-
-[
-  Project running successfully using ANT. 
-  DEBUG_VALUE=0 [Print to stdout Only error messages] 			
-  DEBUG_VALUE=1 [Prints output from the dashboard]
-  DEBUG_VALUE=2 [Print all methods called]
-  DEBUG_VALUE=3 [Print to stdout everytime constructor called]
-    	
-]
-
-BIBLIOGRAPHY:
-
-[
-http://stackoverflow.com/questions/22663107/print-all-key-value-pairs-in-a-java-concurrenthashmap
-http://www.dotnetperls.com/arraylist-java
-http://stackoverflow.com/questions/9620683/java-fileoutputstream-create-file-if-not-exists
-http://stackoverflow.com/questions/1066589/iterate-through-a-hashmap
-
-]
-
-ACKNOWLEDGEMENT:
-[
-
-Prof. Madhusudhan Govindaraju
-cs542.cs.binghamton.edu mailing list
-
-]
+Each listener should use internal methods to process the data it has received, store it in a data structure, and also write it to the output file using the method in the displayFile interface.
